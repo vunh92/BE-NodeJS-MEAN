@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
 
-const api = 'https://fe-angular-mean-44zh7yimi-vunh92.vercel.app/' //or *
+const api = 'https://fe-angular-mean.vercel.app' //or *
 
 // cho phép domain sử dụng api
 app.use((req, res, next)=>{
