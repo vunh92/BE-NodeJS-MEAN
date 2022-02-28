@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 // cho phép domain sử dụng api
 app.use((req, res, next)=>{
@@ -33,4 +33,7 @@ require('./core/database');
 // Gọi control để gọi các controllers
 app.use('/', require('./core/control'))
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+// app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(process.env.PORT, () =>
+  console.log(`Example app listening on port ${PORT}!`)
+);
