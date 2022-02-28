@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/build/css/custom.min.css" rel="stylesheet">
+    
+    <style>
+        .error{
+            font-size: 13px;
+            font-style: italic;
+            color: red;
+        }
+        #loginForm div input{
+            margin-bottom: 0;
+        }
+        #loginForm div{
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body class="login">
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form action="" method="post" id="loginForm">
+                        <h1>Login Form</h1>
+                        <div class="text-left">
+                            <input type="text" class="form-control" id="username" placeholder="Tên Đăng Nhập"/>
+                            <span class="error error_username"></span>
+                        </div>
+                        <div class="text-left">
+                            <input type="password" class="form-control" id="password" placeholder="Mật Khẩu"/>
+                            <span class="error error_password"></span>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-default">Log in</button>
+                            <a class="reset_pass" href="#">Quên mật khẩu?</a>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <div>
+                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and
+                                    Terms</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Khai báo
+                var username, password, flag=1;
+
+                // Lấy dữ liệu
+                username = $('#username').val();
+                password = $('#password').val();
+
+                // Kiểm tra dữ liệu
+                
+                // U1. kiểm tra username không được rỗng
+                if(username=='')
+                {
+                    flag=0;
+                    $('.error_username').html('Vui lòng nhập <b>Tên Đăng Nhập</b>');
+                }
+                else
+                {
+                    $('.error_username').html('');
+                }
+
+                // U2. kiểm tra username không chứa kí tự đặc biệt
+                // U3. username chứa kí tự ít nhất: 6, nhiều nhất: 50
+                // U4. ....
+
+                // P1. kiểm tra password không được rỗng
+                if(password=='')
+                {
+                    flag=0;
+                    $('.error_password').html('Vui lòng nhập <b>Mật Khẩu</b>');
+                }
+                else
+                {
+                    $('.error_password').html('');
+                }
+
+                // Tổng hợp
+                if(flag==1)
+                {
+                    // gửi ajax
+                    $.ajax({
+                        url: 'admin/user/login',
+                        type: 'POST',
+                        data: {username, password},
+                        success: function(results){
+                            if(results.kq==0){
+                                alert(results.err);
+                            }else{
+                                alert(results.msg);
+
+                                // tự động chuyển trang
+                                window.location.href = '/admin/user/index';
+                            }
+                        }
+                    });
+                    return false;
+                }
+            })
+        });
+    </script>
+
+</body>
+
+</html>

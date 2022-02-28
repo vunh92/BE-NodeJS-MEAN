@@ -1,0 +1,158 @@
+<!-- jQuery -->
+<script src="/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- FastClick -->
+<script src="/vendors/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="/vendors/nprogress/nprogress.js"></script>
+<!-- Chart.js -->
+<script src="/vendors/Chart.js/dist/Chart.min.js"></script>
+<!-- gauge.js -->
+<script src="/vendors/gauge.js/dist/gauge.min.js"></script>
+<!-- bootstrap-progressbar -->
+<script src="/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<!-- iCheck -->
+<script src="/vendors/iCheck/icheck.min.js"></script>
+<!-- Skycons -->
+<script src="/vendors/skycons/skycons.js"></script>
+<!-- Flot -->
+<script src="/vendors/Flot/jquery.flot.js"></script>
+<script src="/vendors/Flot/jquery.flot.pie.js"></script>
+<script src="/vendors/Flot/jquery.flot.time.js"></script>
+<script src="/vendors/Flot/jquery.flot.stack.js"></script>
+<script src="/vendors/Flot/jquery.flot.resize.js"></script>
+<!-- Flot plugins -->
+<script src="/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src="/vendors/flot.curvedlines/curvedLines.js"></script>
+<!-- DateJS -->
+<script src="/vendors/DateJS/build/date.js"></script>
+<!-- JQVMap -->
+<script src="/vendors/jqvmap/dist/jquery.vmap.js"></script>
+<script src="/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+<script src="/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="/vendors/moment/min/moment.min.js"></script>
+<script src="/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+<!-- Custom Theme Scripts -->
+<script src="/build/js/custom.min.js"></script>
+
+<!-- popup -->
+<%-include('popup_delete')%>
+
+<script>
+    function js_delete(id='', name='')
+    {
+        // truyền id vào get_id
+        $('#get_id').val(id);
+
+        // truyền dữ liệu vào get_value
+        $('#get_value').html(name);
+    }
+    function xoangay()
+    {
+        // lấy id
+        var id = $('#get_id').val();
+
+        var flag=1;
+        var err='';
+
+        if(id=='')
+        {
+            flag=0;
+            err='ID không được rỗng';
+        }
+
+        if(flag==1)
+        {
+            // Gửi ajax
+            $.ajax({
+                url: 'admin/<%=module%>/delete',
+                type: 'POST',
+                data: {id},
+                success: function(results){
+                    if(results.kq==1){
+                        alert('Đã chuyển vào thùng rác');
+
+                        // xóa dòng cần xóa
+                        $('#delete_'+id).remove();
+
+                        // Gửi tổng số lượng trash vào chỗ thùng rác
+                        $('#trash').text(results.count_trash);
+                    }else{
+                        alert(alert(results.err));
+                    }
+                }
+            });
+            return false;
+        }
+        else
+        {
+            alert(err);
+        }
+    }
+    function change_name(key='')
+    {
+        var name='';
+
+        switch (key) {
+            case 'name': name='Tên'; break;
+            case 'slug': name='Slug'; break;
+            case 'content': name='Nội Dung'; break;
+            case 'parent': name='Cha'; break;
+            case 'username': name='Tên Đăng Nhập'; break;
+            case 'password': name='Mật Khẩu'; break;
+            case 'email': name='E-Mail'; break;
+            case 'phone': name='Số Điện Thoại'; break;
+            case 'role': name='Vai Trò'; break;
+        
+            default: name='No_Name'; break;
+        }
+
+        return name;
+    }
+    function ChangeToSlug()
+    {
+        var title, slug;
+    
+        //Lấy text từ thẻ input title 
+        title = document.getElementById("name").value;
+    
+        //Đổi chữ hoa thành chữ thường
+        slug = title.toLowerCase();
+    
+        //Đổi ký tự có dấu thành không dấu
+        slug = slug.replace(/á|à|ả|ạ|ã|ă|ắ|ằ|ẳ|ẵ|ặ|â|ấ|ầ|ẩ|ẫ|ậ/gi, 'a');
+        slug = slug.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/gi, 'e');
+        slug = slug.replace(/i|í|ì|ỉ|ĩ|ị/gi, 'i');
+        slug = slug.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/gi, 'o');
+        slug = slug.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/gi, 'u');
+        slug = slug.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
+        slug = slug.replace(/đ/gi, 'd');
+        //Xóa các ký tự đặt biệt
+        slug = slug.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '');
+        //Đổi khoảng trắng thành ký tự gạch ngang
+        slug = slug.replace(/ /gi, "-");
+        //Đổi nhiều ký tự gạch ngang liên tiếp thành 1 ký tự gạch ngang
+        //Phòng trường hợp người nhập vào quá nhiều ký tự trắng
+        slug = slug.replace(/\-\-\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-\-/gi, '-');
+        slug = slug.replace(/\-\-/gi, '-');
+        //Xóa các ký tự gạch ngang ở đầu và cuối
+        slug = '@' + slug + '@';
+        slug = slug.replace(/\@\-|\-\@|\@/gi, '');
+        //In slug ra textbox có id “slug”
+        document.getElementById('slug').value = slug;
+    }
+</script>
+
+<!-- Xử lý form -->
+<% if(form==true){ %>
+<!-- ckeditor -->
+<script>CKEDITOR.replace('content');</script>
+<%-include('form')%>
+<% } %>
+<!-- end -->

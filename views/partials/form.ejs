@@ -1,0 +1,82 @@
+<script>
+    $(document).ready(function(){
+        $('#formProcessData').on('submit', function(e){
+            e.preventDefault();
+    
+            // khai báo
+            var module = '<%=module%>';
+
+            if(module=='user'){
+                var array_field = [
+                    { name: 'username', id: 'username', required: 'required' },
+                    { name: 'password', id: 'password', required: 'required' },
+                    { name: 'email', id: 'email', required: 'required' },
+                    { name: 'phone', id: 'phone', required: 'required' },
+                    { name: 'role', id: 'role', required: 'required' }
+                ];
+            }else if(module=='category'){
+                var array_field = [
+                    { name: 'name', id: 'name', required: 'required', ckeditor: false },
+                    { name: 'slug', id: 'slug', required: 'required', ckeditor: false },
+                    { name: 'parent', id: 'parent', required: '', ckeditor: false },
+                    { name: 'content', id: 'content', required: '', ckeditor: true }
+                ];
+            }
+    
+            var array_data={};
+            var flag=1;
+    
+            array_field.forEach(e=>{
+                // lấy dữ liệu
+                var data = $('#'+e.name).val();
+    
+                // kiểm tra dữ liệu
+                
+                // 1. kiểm tra không được rỗng
+                if(e.required=='required')
+                {
+                    if(data == '')
+                    {
+                        $('.error_'+e.id).html(change_name(e.name) + ' không được rỗng');
+                        flag=0;
+                    }
+                    else
+                    {
+                        $('.error_'+e.id).html('');
+                        // thêm dữ liệu vào mảng
+                        array_data[e.name] = data;
+                    }
+                }else{
+                    if(e.ckeditor == false){
+                        array_data[e.name] = data;
+                    }else{
+                        array_data[e.name] = CKEDITOR.instances[e.name].getData();
+                    }
+                }
+            })
+
+            // Tổng hợp
+            if(flag==1)
+            {
+                // Gửi ajax
+                $.ajax({
+                    url: 'admin/<%=module%>/processForm',
+                    type: 'POST',
+                    data: array_data,
+                    success: function(results){
+                        if(results.kq == 0){
+                            alert('Error:' + results.err);
+                        }else{
+                            alert('Đã thêm thành công');
+    
+                            // chuyển trang về index
+                            window.location.href = 'admin/<%=module%>/index';
+                        }
+                        //console.log(results);
+                    }
+                });
+                return false;
+            }
+        })
+    })
+</script>
