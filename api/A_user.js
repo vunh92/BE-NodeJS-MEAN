@@ -116,7 +116,7 @@ router.post('/login', (req, res) => {
                                 res.send({kq:0, err})
                             }else{
                                 // Lưu token vào db
-                                const obj = { id_user: data[0]._id, token };
+                                const obj = { id_user: data[0]._id, role: data[0].role,token };
 
                                 tokenModel
                                 .create(obj, (err, dataToken)=>{

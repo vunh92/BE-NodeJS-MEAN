@@ -2,11 +2,12 @@ const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000
 
-const api = 'https://fe-angular-mean.vercel.app' //or *
+const domain = 'http://localhost:4200'
+// const domain = 'https://fe-angular-mean.vercel.app' //or *
 
 // cho phép domain sử dụng api
 app.use((req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', api);
+    res.setHeader('Access-Control-Allow-Origin', domain);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -35,7 +36,7 @@ require('./core/database');
 // Gọi control để gọi các controllers
 app.use('/', require('./core/control'))
 
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-app.listen(process.env.PORT, () =>
-  console.log(`Example app listening on port ${PORT}!`)
-);
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
+// app.listen(process.env.PORT, () =>
+//   console.log(`Example app listening on port ${PORT}!`)
+// );

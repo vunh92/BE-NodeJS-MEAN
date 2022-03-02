@@ -20,6 +20,19 @@ router.get('/list', (req, res)=>{
     })
 });
 
+// Lấy dữ liệu item
+router.get('/get_item/:id', (req, res)=>{
+    productModel
+    .find({_id: req.params.id})
+    .exec((err, data)=>{
+        if(err){
+            res.send({kq:0, err});
+        }else{
+            res.send({kq:1, data});
+        }
+    })
+});
+
 // thêm sản phẩm
 router.post('/add', (req, res) => {
     // khai báo

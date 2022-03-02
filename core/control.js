@@ -27,5 +27,7 @@ router.use('/api/contact', require('../api/A_contact'))
 router.use('/api/cart', require('../api/A_cart'))
 // Gọi api like
 router.use('/api/like', require('../api/A_like'))
+// Gọi api send mail
+router.use('/api/send_mail', require('../api/A_sendMail'))
 
 module.exports = router;
