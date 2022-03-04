@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose')
 
 // Gọi model like
 const likeModel = require('../models/M_like');
@@ -68,18 +69,18 @@ router.post('/add', function (req, res) {
     // tổng hợp
     if(flag==1){
         likeModel
-        .find({name})
+        .find({id_product: mongoose.Types.ObjectId(id_product), id_user: mongoose.Types.ObjectId(id_user)})
         .exec((err, data)=>{
             if(err){
                 res.send({kq:0, err});
             }else{
                 if(data==''){
                     likeModel
-                    .create(obj, (err, data)=>{
-                        if(err){
-                            res.send({kq:0, err});
+                    .create(obj, (err2, data2)=>{
+                        if(err2){
+                            res.send({kq:0, err2});
                         }else{
-                            res.send({kq:1, data});
+                            res.send({kq:1, data2});
                         }
                     });
                 }else{

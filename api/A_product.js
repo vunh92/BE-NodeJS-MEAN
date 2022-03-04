@@ -36,32 +36,46 @@ router.get('/get_item/:id', (req, res)=>{
 // thêm sản phẩm
 router.post('/add', (req, res) => {
     // khai báo
-    var name=slug=err='', price=0, parent, id_user, flag=1;
+    var name=slug=parent=detail=img=img2=img3=err='', price=discount=0, flag=1, status, gallery=[], date_created, date_updated;
 
     const kq = new Admin();
 
     // lấy dữ liệu
     name=req.body.name;
+    slug=req.body.slug;
     parent=req.body.parent;
     price=req.body.price;
-    slug=kq.ChangeToSlug(name);
+    discount=req.body.discount;
+    // gallery=req.body.gallery;
+    status=req.body.status;
+    detail=req.body.detail;
+    img=req.body.img;
+    img2=req.body.img2;
+    img3=req.body.img3;
+    date_created=req.body.date_created;
+    date_updated=req.body.date_updated;
+    // var galleryList = []
+    // galleryList.push(img, img2, img3)
+    gallery = [img, img2, img3]
 
     // kiểm tra dữ liệu
     if(name==''){
         flag=0;
         err='Vui lòng nhập Tên Sản Phẩm';
-    }
+    } 
+    const obj = {name, slug, parent, price, discount, gallery, status, detail, img, date_created};
+    console.log(obj)
 
     // tổng hợp
     if(flag==1){
         productModel
-        .find({name})
+        .find({slug})
         .exec((err, data)=>{
             if(err){
                 res.send({kq:0, err});
             }else{
                 if(data==''){
-                    const obj = {name, slug, price, parent};
+                    // const obj = {name, slug, parent, price, discount, gallery, status, detail, img, date_created, date_updated};
                     // thêm
                     productModel
                     .create(obj, (err, data)=>{

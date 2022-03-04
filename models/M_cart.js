@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 // viết schema
 const cartSchema = new mongoose.Schema({
-    id_product: { type: String, require: true, unique: true },
-    name: { type: String, require: true, unique: true },
-    id_user: { type: mongoose.Types.ObjectId, default: null },
+    id_product: { type: mongoose.Types.ObjectId, require: true },
+    name: { type: String, require: true },
+    id_user: { type: mongoose.Types.ObjectId, require: true },
     price: { type: Number, default: 0 },
     qty: { type: Number, default: 0 },
     img: { type: String, default: '' },

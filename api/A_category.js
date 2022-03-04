@@ -10,7 +10,7 @@ const Admin = require('../core/admin');
 // list category
 router.get('/list', (req, res)=>{
     categoryModel
-    .find({trash: false})
+    .find()
     .exec((err, data)=>{
         if(err){
             res.send({kq:0, err});

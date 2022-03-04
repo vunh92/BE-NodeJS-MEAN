@@ -38,7 +38,7 @@ router.get('/:email', (req, res) => {
             from: 'huuvu1992hk@gmail.com',
             to: email,
             subject: 'Sending Email using Node.js',
-            text: 'Nội dung email'
+            text: 'Nội dung email: Lấy lại mật khẩu'
         };
 
         transporter.sendMail(mailOptions, function(error, info){

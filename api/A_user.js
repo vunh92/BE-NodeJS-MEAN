@@ -143,4 +143,103 @@ router.post('/login', (req, res) => {
     }
 })
 
+
+// register
+router.post('/register', async (req, res) => {
+    // khai báo
+    var username=password=email=phone=role=error='', flag=1;
+
+    // lấy dữ liệu
+    username = req.body.username;
+    password = req.body.password;
+    email = req.body.email;
+    phone = req.body.phone;
+    role = req.body.role;
+    // kiểm tra dữ liệu
+    if(username=='')
+    {
+        flag=0;
+        error+='Vui lòng nhập Tên Đăng Nhập\n';
+    }
+    if(password=='')
+    {
+        flag=0;
+        error+='Vui lòng nhập Mật Khẩu\n';
+    }
+    if(email=='')
+    {
+        flag=0;
+        error+='Vui lòng nhập Email\n';
+    }
+    if(phone=='')
+    {
+        flag=0;
+        error+='Vui lòng nhập Phone\n';
+    }
+
+    // Tổng kết
+    if(flag==1)
+    {
+        // Gọi database
+        // check username
+        userModel
+        .find({username})
+        .exec((errUsername, dataUsername)=>{
+            if(errUsername){
+                res.send({kq:0, err: errUsername})
+            }else{
+                // check username
+                if(dataUsername==''){
+                    userModel
+                    .find({email})
+                    .exec((errEmail, dataEmail)=>{
+                        if(errEmail){
+                            res.send({kq:0, err: errEmail});
+                        }else{
+                             // check email
+                             if(dataEmail==''){
+                                userModel
+                                .find({phone})
+                                .exec((errPhone, dataPhone)=>{
+                                    if(errPhone){
+                                        res.send({kq:0, err: errPhone});
+                                    }else{
+                                        // check phone
+                                        if(dataPhone==''){
+                                            // to hash a password
+                                            var hash = bcrypt.hashSync(password, salt);
+
+                                            // object để lưu vào collection
+                                            const obj = {username, password: hash, email, phone, role};
+
+                                            // thêm vào collection user
+                                            userModel.create(obj, (errAddUser, data)=>{
+                                                if(errAddUser){
+                                                    res.send({kq:0, err: errAddUser});
+                                                }else{
+                                                    res.send({kq:1, data})
+                                                }
+                                            })
+                                        }else{
+                                            res.send({kq:0, err: 'Số Điện Thoại đã tồn tại'});
+                                        }
+                                    }
+                                })
+                             }else{
+                                res.send({kq:0, err: 'Email đã tồn tại'});
+                            }
+                        }
+                    })
+                }else{
+                    res.send({kq:0, err: 'Tên Đăng Nhập đã tồn tại'})
+                }
+            }
+        })
+    }
+    else
+    {
+        res.send(error);
+    }
+})
+
 module.exports = router;
