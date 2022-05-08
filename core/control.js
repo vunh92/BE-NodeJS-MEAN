@@ -33,6 +33,6 @@ router.use('/api/send_mail', require('../api/A_sendMail'))
 router.use('/api/ship', require('../api/A_ship'))
 
 //-- connect api PDA
-router.use('/pda/account', require('../api/PDA_Accounts'))
+router.use('/pda/accounts', require('../api/PDA_Accounts'))
 
 module.exports = router;
